@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 from category.models import Category
 # Create your models here.
 
@@ -15,6 +17,9 @@ class Product(models.Model):
     # удаляется все продукты этой категории
     created_date = models.DateTimeField(auto_now_add=True)  # auto_now_add обновляется только при создании
     modified_date = models.DateTimeField(auto_now=True)  # auto_now обновляет поле каждый раз при изменении
+
+    def get_url(self):
+        return reverse('product_detail', args=[self.category.slug, self.slug])
 
     def __str__(self):
         return self.product_name
