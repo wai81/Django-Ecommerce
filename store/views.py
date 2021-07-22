@@ -4,7 +4,7 @@ from category.models import Category
 from .models import Product
 
 
-# Create your views here.
+# фунция отображения списка продуктов с отбором по категории
 def store(request, category_slug=None):
     categories = None
     products = None
@@ -25,5 +25,15 @@ def store(request, category_slug=None):
     return render(request, 'store/store.html', context)
 
 
+# фунция отоброжения деталей о выбраном продукте
 def product_detail(request, category_slug, product_slug):
-    return render(request, 'store/product_detail.html')
+    try:
+        single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
+    except Exception as ex:
+        raise ex
+
+    contex = {
+        'single_product': single_product,
+    }
+
+    return render(request, 'store/product_detail.html', contex)
