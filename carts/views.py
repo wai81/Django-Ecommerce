@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -16,7 +17,6 @@ def _cart_id(request):
 
 # создаем корзину
 def add_cart(request, product_id):
-
     product = Product.objects.get(id=product_id)  # get product by ID
 
     try:
@@ -43,11 +43,26 @@ def add_cart(request, product_id):
         )
         cart_item.save()
 
-    return HttpResponse(cart_item.quantity)
-    exit()
+    # return HttpResponse(cart_item.quantity)
+    # exit()
     # переходим в корзину redirect-перенаправляет
-    # return redirect('cart')
+    return redirect('cart')
 
 
-def cart(request):
-    return render(request, 'store/cart.html')
+def cart(request, total=0, quantity=0, cart_items=None):
+    try:
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+        cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+        for cart_item in cart_items:
+            total += (cart_item.product.price * cart_item.quantity)
+            quantity += cart_item.quantity
+    except ObjectDoesNotExist:
+        pass
+
+    context = {
+        'total': total,
+        'quantity': quantity,
+        'car_items': cart_items,
+    }
+
+    return render(request, 'store/cart.html', context)
