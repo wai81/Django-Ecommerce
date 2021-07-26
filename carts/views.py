@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from carts.models import Cart, CartItem
+from .models import Cart, CartItem
 from store.models import Product
 
 
@@ -17,7 +17,7 @@ def _cart_id(request):
 
 # создаем корзину
 def add_cart(request, product_id):
-    product = Product.objects.get(id=product_id)  # get product by ID
+    product = Product.objects.get(id=product_id)  # get the product
 
     try:
         # получаем ИД корзины
@@ -42,11 +42,11 @@ def add_cart(request, product_id):
             cart=cart,
         )
         cart_item.save()
-
+    return redirect('cart')
     # return HttpResponse(cart_item.quantity)
     # exit()
     # переходим в корзину redirect-перенаправляет
-    return redirect('cart')
+
 
 
 def cart(request, total=0, quantity=0, cart_items=None):
@@ -56,13 +56,17 @@ def cart(request, total=0, quantity=0, cart_items=None):
         for cart_item in cart_items:
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
+        tax = (total * 20)/100  # ндс
+        grand_total = total + tax
     except ObjectDoesNotExist:
-        pass
+        pass  # just ignore
 
     context = {
         'total': total,
         'quantity': quantity,
-        'car_items': cart_items,
+        'cart_items': cart_items,
+        'tax': tax,
+        'grand_total': grand_total,
     }
 
     return render(request, 'store/cart.html', context)
