@@ -16,6 +16,12 @@ def store(request, category_slug=None):
         categories = get_object_or_404(Category, slug=category_slug)  # получаем выбранныю категорию или код ошибки 404
         # фильтруем подукты с выбранной ктегорией и  фильтром if_available=True
         products = Product.objects.filter(category=categories, is_available=True)
+
+        # Реализация пагинации
+        paginator = Paginator(products, 3)
+        page = request.GET.get('page')
+        paged_products = paginator.get_page(page)
+
         product_count = products.count()  # count() возвращает количество записей
     else:
         products = Product.objects.all().filter(is_available=True)  # выбираем все подукты с фильтром if_available=True
@@ -24,6 +30,7 @@ def store(request, category_slug=None):
         paginator = Paginator(products, 3)
         page = request.GET.get('page')
         paged_products = paginator.get_page(page)
+
         product_count = products.count()  # count() возвращает количество записей
 
     context = {
