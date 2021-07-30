@@ -4,6 +4,7 @@ from carts.models import CartItem
 from carts.views import _cart_id
 from category.models import Category
 from .models import Product
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
 # фунция отображения списка продуктов с отбором по категории
@@ -18,10 +19,16 @@ def store(request, category_slug=None):
         product_count = products.count()  # count() возвращает количество записей
     else:
         products = Product.objects.all().filter(is_available=True)  # выбираем все подукты с фильтром if_available=True
+
+        # Реализация пагинации
+        paginator = Paginator(products, 3)
+        page = request.GET.get('page')
+        paged_products = paginator.get_page(page)
         product_count = products.count()  # count() возвращает количество записей
 
     context = {
-        'products': products,
+        # 'products': products, # перерача всех данных
+        'products': paged_products,  # перерача данных по условию пагинации
         'product_count': product_count,
     }
     return render(request, 'store/store.html', context)
