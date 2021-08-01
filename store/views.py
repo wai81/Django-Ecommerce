@@ -24,7 +24,7 @@ def store(request, category_slug=None):
 
         product_count = products.count()  # count() возвращает количество записей
     else:
-        products = Product.objects.all().filter(is_available=True)  # выбираем все подукты с фильтром if_available=True
+        products = Product.objects.all().filter(is_available=True).order_by('id')  # выбираем все подукты с фильтром if_available=True
 
         # Реализация пагинации
         paginator = Paginator(products, 3)
