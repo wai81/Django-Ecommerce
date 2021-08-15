@@ -41,20 +41,6 @@
 												<option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
 											{% endfor %}
 										</select>
-<!--										<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">-->
-<!--											<label class="btn btn-light">-->
-<!--												<input type="radio" name="radio_color"> Silver-->
-<!--											</label>-->
-<!--											<label class="btn btn-light">-->
-<!--												<input type="radio" name="radio_color"> Gray-->
-<!--											</label>-->
-<!--											<label class="btn btn-light active">-->
-<!--												<input type="radio" name="radio_color checked"> Gold-->
-<!--											</label>-->
-<!--											<label class="btn btn-light">-->
-<!--												<input type="radio" name="radio_color"> Black-->
-<!--											</label>-->
-<!--										</div>-->
 									</div>
 								</div> <!-- row.// -->
 								<div class="row">
@@ -66,35 +52,26 @@
 													<option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
 												{% endfor %}
 											</select>
-<!--										<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">-->
-<!--											<label class="btn btn-light">-->
-<!--												<input type="radio" name="radio_color"> S-->
-<!--											</label>-->
-<!--											<label class="btn btn-light active">-->
-<!--												<input type="radio" name="radio_color" checked> M-->
-<!--											</label>-->
-<!--											<label class="btn btn-light">-->
-<!--												<input type="radio" name="radio_color"> L-->
-<!--											</label>-->
-<!--											<label class="btn btn-light">-->
-<!--												<input type="radio" name="radio_color"> XL-->
-<!--											</label>-->
-<!--										</div>-->
+
 									</div>
 								</div> <!-- row.// -->
 								<hr>
-								{% if single_product.stock <= 0 %}
+								{% if single_product.stock == 0 %}
 									<h5>Out of Stock</h5>
 								{% else %}
 									{% if in_cart %}
-									<a href="#" class="btn  btn-success">
-										<span class="text">Added to Cart</span>
-										<i class="fas fa-check"></i>
-									</a>
-									<a href="{% url 'cart' %}" class="btn  btn-outline-primary">
-										<span class="text">View Cart</span>
-										<i class="fas fa-eye"></i>
-									</a>
+<!--									<a href="#" class="btn  btn-success">-->
+<!--										<span class="text">Added to Cart</span>-->
+<!--										<i class="fas fa-check"></i>-->
+<!--									</a>-->
+<!--									<a href="{% url 'cart' %}" class="btn  btn-outline-primary">-->
+<!--										<span class="text">View Cart</span>-->
+<!--										<i class="fas fa-eye"></i>-->
+<!--									</a>-->
+									<button type="submit" class="btn  btn-primary">
+										<span class="text">Add to Cart</span>
+										<i class="fas fa-shopping-cart"></i>
+									</button>
 									{% else %}
 									<button type="submit" class="btn  btn-primary">
 										<span class="text">Add to Cart</span>
