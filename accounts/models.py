@@ -61,6 +61,9 @@ class Account(AbstractBaseUser):
 
     object = MyAccountManager()  # переопределяем что мы используем свой класс создания пользователя MyAccountManager()
 
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
     # функция возвращаем объект учетной записи внутри шаблона. Возвращает адрес электронной почты
     def __str__(self):
         return self.email
